@@ -1,15 +1,28 @@
 package com.knowledgebunker.model
 
+import kotlinx.serialization.Serializable
+
 /**
  * Bunker spec model — preserves markdown hierarchy.
  * Task 2: Bunker Spec Parser — Markdown AST Preserving Indent
  * Bunker = repo, Domain = *.md file (kebab-case), Section = ##, Category = ###/####, Resource = bullet URL/bare ref.
+ * Task 7: Serializable for marketplace.json curated index (kebab-case *.md + archive-box/inbox.md exists).
  */
+@Serializable
 data class BunkerMeta(
     val id: String,
     val name: String,
-    val path: String = ""
+    val path: String = "",
+    // Marketplace optional fields — defaults keep FileBunkerDataSource mapping compatible
+    val description: String? = null,
+    val url: String? = null,
+    val githubUrl: String? = null,
+    val stars: Int? = null,
+    val author: String? = null
 )
+
+/** Alias for test spec: Json.decodeFromString<Marketplace>(json) where Marketplace == List<BunkerMeta> */
+typealias Marketplace = List<BunkerMeta>
 
 data class Bunker(
     val id: String,

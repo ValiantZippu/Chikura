@@ -39,7 +39,10 @@ kotlin {
         val desktopMain by getting {
             dependencies {
                 implementation(libs.ktor.client.cio)
-                // Compose desktop is provided via compose.desktop.* handled by plugin
+                // Skiko native runtime for the current OS — REQUIRED on the run classpath.
+                // Without it, `:composeApp:run` fails with:
+                // org.jetbrains.skiko.LibraryLoadException: Cannot find skiko-windows-x64.dll.sha256
+                implementation(compose.desktop.currentOs)
             }
         }
         val wasmJsMain by getting {

@@ -1,9 +1,23 @@
-# KnowledgeBunker
+# Chikura (知蔵) — ちくら
 
-> A massive curated knowledge archive — not a scrape. Continuation of **Artist Hub**. Preserve curation.
+> **知蔵 Chikura — the knowledge vault.** A massive curated knowledge archive — not a scrape. Continuation of **Artist Hub**. Software + megathreads. Preserve curation.
+
+| | |
+|---|---|
+| **English / Romaji** | **Chikura** |
+| **Kanji** | **知蔵** |
+| **Hiragana (Pronunciation)** | **ちくら** |
+
+### 🔍 Meaning Breakdown
+- **知 (Chi)** — Knowledge / Wisdom / Intellect
+- **蔵 (Kura)** — Bunker / Vault / Secure Storehouse / Warehouse
+
+> **Chikura = vault that safeguards knowledge.** The **software** is `Chikura`. The **content unit** is a **ChikuThread (チクスレ)** — an author's curated megathread repo that follows the ChikuThread spec. Think moelist/gelbooru-style megathread but as a git repo: `kebab-case *.md + archive-box/inbox.md`, loaded by the Chikura apps as List / Kanban / Whiteboard.
 
 ## What it is
 
+- **Chikura (software)** — blank-by-default KMP app at repo root (`composeApp/` — Desktop JVM + Web wasmJs + Android placeholder). Loads any `ChikuThread` repo via GitHub URL or curated marketplace.
+- **ChikuThread (content)** — a repo = one megathread (e.g. `music` ~479 links, `games` ~166 links). This repo itself is the **reference ChikuThread** (`ValiantZippu/Chikura`) and the Chikura software lives alongside it at top level (no `app/` wrapper).
 - Carefully selected high-value resources for artists, creators, devs, researchers
 - Started as large human-maintained markdown collections → now **clean, consistent markdown** (easier to handle than JSON, human + machine readable)
 - Served via future website/app/AI — but browsable as-is
@@ -11,25 +25,48 @@
 ## Quick start — where to look
 
 ```
-.                         ← clean domain files (one per topic, kebab-case)
-  music.md                ← 479 links, ## Section / ### Category / - https://
-  games.md                ← 166 links
-  gadget-electronics.md   ← 78 links
-  body-fashion.md, camera.md, japan.md, programming-cs.md ...
-  2d-animation.md / 3d-animation.md / illustration.md / pirate-ship.md — placeholders
-archive-box/              ← expanding workspace (THE inbox)
-  inbox.md                ← dump new bulk URLs here (AI + you sort)
-  art-flat-dump.md        ← 924 flat art links (waiting to be classified)
-  quarantine.md           ← questionable / obsolete / duplicate (was Trash Warehouse)
-  README.md               ← workflow
-  processed-log.md        ← optional log
-docs/
-  taxonomy-blueprint.md   ← Discord blueprint: difficulty (absolute-beginner..advanced), resource types (channels/videos/books/websites/warehouse...)
-backups/
-  raw_archive_2026-09-03/ ← timestamped SHA256 backup of originals (recoverable)
-scripts/
-  clean_markdown.py       ← reproducible cleaning transform
+.                         ← Chikura software repo (KMP at root, megathreads isolated)
+  composeApp/             ← software (Kotlin Multiplatform, desktop + wasmJs + androidMain placeholder)
+  gradle/                 ← wrapper (8.10.2)
+  settings.gradle.kts     ← rootProject.name = "Chikura"
+  ChikuThreads/           ← marketplace root — each author has folder, each thread is repo-like folder
+    ValiantZippu/         ← your profile (author)
+      ChikuThread 1/      ← Thread 1 — reference vault (25 domains, ~1914 links)
+        music.md          ← 479 links, ## Section / ### Category / - https://
+        games.md          ← 166 links
+        gadget-electronics.md ← 78 links
+        body-fashion.md, camera.md, japan.md, programming-cs.md ...
+        2d-animation.md / 3d-animation.md / illustration.md / pirate-ship.md — placeholders
+        archive-box/      ← expanding workspace (THE inbox)
+          inbox.md        ← dump new bulk URLs here (AI + you sort)
+          art-flat-dump.md← 924 flat art links (waiting to be classified)
+          quarantine.md   ← questionable / obsolete / duplicate (was Trash Warehouse)
+          README.md       ← workflow
+          processed-log.md← optional log
+  docs/
+    taxonomy-blueprint.md ← Discord blueprint: difficulty (absolute-beginner..advanced), resource types (channels/videos/books/websites/warehouse...)
+  backups/
+    raw_archive_2026-09-03/ ← timestamped SHA256 backup of originals (recoverable)
+  scripts/
+    clean_markdown.py     ← cleans ChikuThreads/ValiantZippu/ChikuThread 1/*.md
+  marketplace.json        ← ChikuThreads curated index (ValiantZippu profile + Thread 1)
 ```
+
+## ChikuThread spec (what a valid repo looks like)
+
+```text
+<author>/ <chikuthread>/
+  README.md
+  LICENSE
+  *.md                    ← kebab-case domains: music.md, japan.md
+  archive-box/
+    inbox.md              ← required (can be empty)
+    quarantine.md         ← optional but recommended
+  docs/taxonomy-blueprint.md?  ← optional
+```
+
+- `Chikura` loads any repo that satisfies this — marketplace (`Chikura/marketplace`) is only a curated index, direct **Add by URL** (`https://github.com/owner/repo` → validate → `git clone` → `~/Chikura/chikuthreads/<id>/`) works for private chikuthreads.
+- Desktop FS: `~/Chikura/chikuthreads/<chikuthreadId>/`, cache `.chikura-cache/media.json` (gitignored). Web `READ_ONLY` fetches via `raw.githubusercontent.com` / GitHub API.
 
 ## Naming — cleanly renamed
 
@@ -79,14 +116,14 @@ Every domain file:
 
 ## Archive Box — how to expand infinitely
 
-1. Dump bulk into `archive-box/inbox.md` (just paste).
-2. Ask AI: “triage inbox, dedupe vs root, suggest domain/section”.
-3. Move each link to proper root file (`- https://...` under correct `##`/`###`).
-4. Unsure? → `archive-box/quarantine.md`.
-5. Log in `archive-box/processed-log.md` (optional).
-6. Re-run `python scripts/clean_markdown.py` to re-normalize.
+1. Dump bulk into `ChikuThreads/ValiantZippu/ChikuThread 1/archive-box/inbox.md` (just paste).
+2. Ask AI: “triage inbox, dedupe vs vault, suggest domain/section”.
+3. Move each link to proper vault file (`ChikuThreads/ValiantZippu/ChikuThread 1/music.md` → correct `##`/`###`).
+4. Unsure? → `ChikuThreads/ValiantZippu/ChikuThread 1/archive-box/quarantine.md`.
+5. Log in `ChikuThreads/ValiantZippu/ChikuThread 1/archive-box/processed-log.md` (optional).
+6. Re-run `python scripts/clean_markdown.py` to re-normalize (now points at `ChikuThreads/ValiantZippu/ChikuThread 1/`).
 
-`archive-box/art-flat-dump.md` is your first big job — 924 art channels/videos/playlists to chip into `2d-animation.md`, `3d-animation.md`, `illustration.md` etc per blueprint.
+`ChikuThreads/ValiantZippu/ChikuThread 1/archive-box/art-flat-dump.md` is your first big job — 924 art channels/videos/playlists to chip into `ChikuThreads/ValiantZippu/ChikuThread 1/2d-animation.md`, `ChikuThreads/ValiantZippu/ChikuThread 1/3d-animation.md`, `ChikuThreads/ValiantZippu/ChikuThread 1/illustration.md` etc per blueprint.
 
 ## Taxonomy (from blueprint)
 

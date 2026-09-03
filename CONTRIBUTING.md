@@ -1,12 +1,14 @@
-# Contributing to KnowledgeBunker
+# Contributing to Chikura (知蔵) — ChikuThread
 
 Curated > Quantity. One good link beats ten mediocre ones.
 
+> Chikura = vault (software), ChikuThread = megathread (author/repo unit, e.g. `ValiantZippu/Chikura` or `owner/japan-chikuthread`). Every ChikuThread follows `kebab-case *.md + archive-box/inbox.md`.
+
 ## Where to add
 
-- **Know the right domain?** Edit the clean root file directly (`music.md`, `games.md`, etc) under the correct `## Section` / `### Category` with `- https://...`.
-- **Not sure / bulk / unsure quality?** Paste into `archive-box/inbox.md` — no formatting needed. AI + maintainer will triage.
-- **Questionable / duplicate / dead?** → `archive-box/quarantine.md` with `> why`.
+- **Know the right domain?** Edit the vault file directly (`ChikuThreads/ValiantZippu/ChikuThread 1/music.md`, `ChikuThreads/ValiantZippu/ChikuThread 1/games.md`, etc) under the correct `## Section` / `### Category` with `- https://...`.
+- **Not sure / bulk / unsure quality?** Paste into `ChikuThreads/ValiantZippu/ChikuThread 1/archive-box/inbox.md` — no formatting needed. AI + maintainer will triage.
+- **Questionable / duplicate / dead?** → `ChikuThreads/ValiantZippu/ChikuThread 1/archive-box/quarantine.md` with `> why`.
 
 ## Format
 

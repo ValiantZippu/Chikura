@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Clean KnowledgeBunker markdown in-place, preservation-first.
+Clean Chikura markdown in-place, preservation-first.
 - Normalizes headers to # / ## / ###
 - Converts indented URLs to bullet lists
 - Fixes malformed urls (htt ps:// -> https://)
@@ -11,7 +11,7 @@ Clean KnowledgeBunker markdown in-place, preservation-first.
 
 import pathlib, re, collections
 
-ROOT = pathlib.Path(__file__).parent.parent
+ROOT = pathlib.Path(__file__).parent.parent / "ChikuThreads" / "ValiantZippu" / "ChikuThread 1"
 
 FILE_TITLE_FIX = {
     # clean names (current)

@@ -1,6 +1,15 @@
 backups/
 raw/
-.bunker-cache/
-**/.bunker-cache/
+.chikura-cache/
+**/.chikura-cache/
 **/media.json
+# Gradle / KMP build
+build/
+**/build/
+.gradle/
+.kotlin/
+out/
+.idea/
+*.iml
+.DS_Store
 

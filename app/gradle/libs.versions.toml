@@ -1,0 +1,16 @@
+[versions]
+kotlin = "2.0.21"
+compose = "1.7.3"
+composePlugin = "1.7.3"
+agp = "8.5.2"
+
+[libraries]
+# Compose Multiplatform artifacts (provided via compose plugin extension)
+# Keep placeholders for future Ktor/Serialization if needed
+
+[plugins]
+kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+kotlinCompose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+composeMultiplatform = { id = "org.jetbrains.compose", version.ref = "composePlugin" }
+androidLibrary = { id = "com.android.library", version.ref = "agp" }
+androidApplication = { id = "com.android.application", version.ref = "agp" }

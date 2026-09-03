@@ -1,0 +1,41 @@
+# Interview, Inspiration, Podcast, Advice & Life Stories
+
+## Interviews
+
+### Interviews
+
+- https://youtu.be/02Ah5VQrzvA
+
+## Podcasts
+
+### Podcasts
+
+- https://youtu.be/3hptKYix4X8?si=rEY9ZK2QeNPzQC6_
+
+## Life Stories
+
+### Life Stories
+
+- https://www.reddit.com/r/E_ve/comments/176p2qk/does_anyone_know_about_eves_childhood_or_how_he/
+- https://youtu.be/1s83D2ph4wg?si=pIFZVdrJ_6rpH9av
+- https://youtu.be/MooHQuRCh1o
+- https://youtu.be/dElkxu0tWHg?si=bCFMv6JiNra50cIY
+
+## Documentary
+
+### Documentary
+
+- https://youtu.be/aWRuNBUTRwc
+
+## Advice & Solutions
+
+### Advices & Solution
+
+- https://youtu.be/wTnsjmsgJS8?si=lkNzWun6b5OOv3xn
+- https://youtube.com/shorts/xXGBIIpa0iE?si=jpoVrJWzAjf7fT9T
+
+## Insparition
+
+### Insparition [ Outside of Music to find Musician Insparition go to the Music File ]
+
+- https://youtu.be/O0IPsdICcqc?si=A46YHPHBohfBrx8s

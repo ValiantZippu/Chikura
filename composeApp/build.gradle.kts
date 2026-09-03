@@ -39,8 +39,8 @@ kotlin {
     sourceSets {
         val jvmMain by getting {
             dependencies {
+                implementation(compose.desktop.currentOs)
                 implementation(libs.ktor.client.cio)
-                // Compose desktop is provided via compose.desktop.* handled by plugin
             }
         }
         val wasmJsMain by getting {

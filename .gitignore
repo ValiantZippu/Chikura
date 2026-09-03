@@ -1,3 +1,6 @@
 backups/
 raw/
+.bunker-cache/
+**/.bunker-cache/
+**/media.json
 

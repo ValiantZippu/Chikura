@@ -5,6 +5,7 @@ import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.kotlinCompose)
+    alias(libs.plugins.kotlinSerialization)
     alias(libs.plugins.composeMultiplatform)
     // Android placeholder: uncomment when SDK is available
     // alias(libs.plugins.androidLibrary)
@@ -37,10 +38,15 @@ kotlin {
     sourceSets {
         val desktopMain by getting {
             dependencies {
+                implementation(libs.ktor.client.cio)
                 // Compose desktop is provided via compose.desktop.* handled by plugin
             }
         }
-        val wasmJsMain by getting
+        val wasmJsMain by getting {
+            dependencies {
+                implementation(libs.ktor.client.js)
+            }
+        }
 
         // androidMain is a placeholder source set (neat folder) — not compiled until androidTarget() enabled
         // webMain is an alias for file-existence check per Task 1 spec; actual compiled source is wasmJsMain
@@ -50,6 +56,11 @@ kotlin {
             implementation(compose.material3)
             implementation(compose.ui)
             implementation(libs.kotlinx.coroutines.core)
+            implementation(libs.kotlinx.serialization.json)
+            implementation(libs.ktor.client.core)
+            implementation(libs.ktor.client.content.negotiation)
+            implementation(libs.ktor.serialization.kotlinx.json)
+            implementation(libs.ktor.client.logging)
             // JetBrains Mono is loaded via composeResources + fontFamily — black & white theme prep
         }
         commonTest.dependencies {
@@ -60,6 +71,8 @@ kotlin {
             dependencies {
                 implementation(kotlin("test"))
                 implementation(libs.kotlinx.coroutines.core)
+                implementation(libs.ktor.client.cio)
+                implementation(libs.ktor.client.mock)
             }
         }
     }

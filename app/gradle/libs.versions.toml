@@ -3,8 +3,10 @@ kotlin = "2.0.21"
 compose = "1.7.3"
 composePlugin = "1.7.3"
 agp = "8.5.2"
+coroutines = "1.8.1"
 
 [libraries]
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 # Compose Multiplatform artifacts (provided via compose plugin extension)
 # Keep placeholders for future Ktor/Serialization if needed
 

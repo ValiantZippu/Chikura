@@ -5,6 +5,12 @@ package com.knowledgebunker.model
  * Task 2: Bunker Spec Parser — Markdown AST Preserving Indent
  * Bunker = repo, Domain = *.md file (kebab-case), Section = ##, Category = ###/####, Resource = bullet URL/bare ref.
  */
+data class BunkerMeta(
+    val id: String,
+    val name: String,
+    val path: String = ""
+)
+
 data class Bunker(
     val id: String,
     val name: String,

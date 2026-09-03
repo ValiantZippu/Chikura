@@ -195,6 +195,145 @@ fun parseMarkdown(text: String, domain: String): List<Resource> {
 }
 
 /**
+ * Bidirectional write-back: move a resource bullet preserving indent.
+ * Reuse parser logic to locate the bullet line by sequential counter (domain-0001).
+ * Preserves indent (spaces) of original bullet and re-inserts under target ## Section.
+ * If target section does not exist it is created at end of file.
+ */
+fun moveResourceInMarkdown(
+    originalText: String,
+    domain: String,
+    resourceId: String,
+    toSection: String
+): String {
+    val targetSection = toSection.trim()
+    if (targetSection.isEmpty()) return originalText
+    // Extract numeric suffix after last '-'
+    val suffix = resourceId.substringAfterLast("-", "")
+    val targetIdx = suffix.toIntOrNull() ?: return originalText
+
+    val lines = originalText.split("\n").toMutableList()
+
+    // Find line index of the resourceId by replaying parse counting
+    var counter = 1
+    var foundIdx: Int? = null
+    for (i in lines.indices) {
+        val rawLine = lines[i]
+        val trimmed = rawLine.trim()
+        if (trimmed.isEmpty()) continue
+        if (trimmed == "---") continue
+        if (SEPARATOR_RE.matches(rawLine)) continue
+        if (trimmed == "b" && lines.size < 20) continue
+        if (trimmed.startsWith(">")) continue
+        if (SECTION_RE.matches(trimmed) && trimmed.length >= 2) continue
+        if (trimmed.startsWith("#")) continue
+        var candidate = trimmed
+        when {
+            candidate.startsWith("- ") -> candidate = candidate.substring(2).trimStart()
+            candidate.startsWith("-") -> candidate = candidate.substring(1).trimStart()
+            candidate.startsWith("* ") -> candidate = candidate.substring(2).trimStart()
+            candidate.startsWith("*") -> candidate = candidate.substring(1).trimStart()
+            candidate.startsWith("+ ") -> candidate = candidate.substring(2).trimStart()
+            candidate.startsWith("+") -> candidate = candidate.substring(1).trimStart()
+            else -> continue // not a bullet
+        }
+        candidate = fixMalformed(candidate)
+        if (candidate.endsWith("'") && candidate.contains("https://")) {
+            candidate = candidate.trimEnd('\'')
+        }
+        val hasUrl = candidate.contains("https://") || candidate.contains("http://")
+        var isBare = false
+        if (!hasUrl) {
+            if (!candidate.contains(" ") && BARE_DOMAIN_RE.matches(candidate)) isBare = true
+            if (EXE_RE.matches(candidate)) isBare = true
+            if (HOST_PORT_RE.matches(candidate)) isBare = true
+        }
+        if (hasUrl || isBare) {
+            if (counter == targetIdx) {
+                foundIdx = i
+                break
+            }
+            counter++
+        }
+    }
+    val srcIdx = foundIdx ?: return originalText
+    val movedLine = lines[srcIdx]
+    // Remove source
+    lines.removeAt(srcIdx)
+
+    // Adjust search for target header after removal
+    // Find target ## header
+    var headerIdx: Int? = null
+    for (i in lines.indices) {
+        val t = lines[i].trim()
+        if (t.startsWith("#")) {
+            val hc = t.takeWhile { it == '#' }.length
+            if (hc == 2) {
+                val content = t.substring(hc).trim()
+                if (content == targetSection) {
+                    headerIdx = i
+                    break
+                }
+            }
+        }
+    }
+    if (headerIdx == null) {
+        // Create new section at end
+        // Ensure file ends with blank line before header
+        if (lines.isNotEmpty() && lines.last().trim().isNotEmpty()) lines.add("")
+        lines.add("## $targetSection")
+        lines.add("")
+        lines.add(movedLine)
+        return lines.joinToString("\n")
+    }
+    // Find insertion point: before next ## (level 2) or EOF
+    var nextSectionIdx: Int? = null
+    for (i in headerIdx + 1 until lines.size) {
+        val t = lines[i].trim()
+        if (t.startsWith("#")) {
+            val hc = t.takeWhile { it == '#' }.length
+            if (hc == 2) {
+                nextSectionIdx = i
+                break
+            }
+        }
+    }
+    var insertAt = nextSectionIdx ?: lines.size
+    // Trim trailing blank lines before next section / EOF to insert before them
+    while (insertAt > headerIdx + 1 && insertAt - 1 < lines.size && lines[insertAt - 1].trim().isEmpty()) {
+        // Keep one blank separation? Insert before the blanks that separate sections
+        // We do not collapse blanks aggressively — just keep insertion before final blank block
+        // Move insertAt back only if there are >=2 trailing blanks
+        // Simpler: if nextSectionIdx != null, insert right before nextSectionIdx ignoring blank gap
+        break
+    }
+    // If directly after header we have blank lines, skip them to find first content
+    // But insertion before next section naturally lands after existing content.
+    // To keep indent preservation, insert at insertAt
+    // If insertAt == lines.size, just add
+    if (insertAt >= lines.size) {
+        // Ensure blank line before insertion if previous line not blank
+        if (lines.isNotEmpty() && lines.last().trim().isNotEmpty()) {
+            lines.add("")
+        }
+        lines.add(movedLine)
+    } else {
+        // Insert before nextSection: ensure separation
+        // If element before insertAt is not blank, ensure we insert directly
+        lines.add(insertAt, movedLine)
+    }
+    return lines.joinToString("\n")
+}
+
+/**
+ * Overload that works directly with a Resource object (preserves its indent).
+ * Finds the resource by id via same logic; toSection is new section name.
+ */
+fun moveResourceInMarkdown(originalText: String, resource: Resource, toSection: String): String {
+    return moveResourceInMarkdown(originalText, resource.domain, resource.id, toSection)
+}
+
+/**
  * Build Bunker model from parsed resources grouped by section/category.
  * This is a convenience used by future hydrator; not required for Task 2 tests but provided for spec completeness.
  */

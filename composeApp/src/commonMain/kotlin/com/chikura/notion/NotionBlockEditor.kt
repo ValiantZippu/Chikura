@@ -1,5 +1,6 @@
 package com.chikura.notion
 
+import androidx.compose.ui.draw.clip
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*

@@ -15,3 +15,4 @@ fun main() = application {
         App()
     }
 }
+// Window background is set to AMOLED black via App.kt root Box fillMaxSize + ChikuraTheme; native window white artifact fixed by ChikuraTheme background = #000000 and root Box

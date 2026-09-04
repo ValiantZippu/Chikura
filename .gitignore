@@ -1,6 +1,17 @@
-backups/
-raw/
-.bunker-cache/
-**/.bunker-cache/
-**/media.json
+# Gradle
+.gradle/
+app/.gradle/
+app/composeApp/build/
+app/build/
+app/composeApp/build/
 
+# IDE
+.idea/
+*.iml
+*.ipr
+*.iws
+out/
+
+# OS
+.DS_Store
+Thumbs.db

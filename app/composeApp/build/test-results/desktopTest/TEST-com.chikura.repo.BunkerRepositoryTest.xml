@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.chikura.repo.BunkerRepositoryTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-09-04T01:02:45" hostname="0468376d-d75a-4ef3-be25-6080d464895a" time="0.001">
-  <properties/>
-  <testcase name="repositoryDelegatesToDataSource[desktop]" classname="com.chikura.repo.BunkerRepositoryTest" time="0.001"/>
-  <testcase name="listBunkersViaFake[desktop]" classname="com.chikura.repo.BunkerRepositoryTest" time="0.0"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>

@@ -1,5 +1,5 @@
-// Chikura Massive App — 500 lines AMOLED black
-import "./massive-pro.css"
+// Chikura Amoled Showcase — professional 500 lines AMOLED black rounded 16
+import "./chikura-amoled.css"
 
 export function MassiveComp0001() { return <div className="amoled-m-0001">MASSIVE 0001 — AMOLED black #000 rounded 16 smooth</div> }
 export function MassiveComp0002() { return <div className="amoled-m-0002">MASSIVE 0002 — AMOLED black #000 rounded 16 smooth</div> }

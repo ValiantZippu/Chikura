@@ -13,3 +13,9 @@ out/
 *.iml
 .DS_Store
 
+# Web wiki
+web/node_modules/
+web/dist/
+web/package-lock.json
+*.tsbuildinfo
+

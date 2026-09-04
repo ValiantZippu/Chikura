@@ -13,5 +13,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "KnowledgeBunker"
+rootProject.name = "Chikura"
 include(":composeApp")

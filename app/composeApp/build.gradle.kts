@@ -84,10 +84,10 @@ kotlin {
 compose {
     desktop {
         application {
-            mainClass = "com.knowledgebunker.app.MainKt"
+            mainClass = "com.chikura.app.MainKt"
             nativeDistributions {
                 targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-                packageName = "com.knowledgebunker.app"
+                packageName = "com.chikura.app"
                 packageVersion = "1.0.0"
             }
         }

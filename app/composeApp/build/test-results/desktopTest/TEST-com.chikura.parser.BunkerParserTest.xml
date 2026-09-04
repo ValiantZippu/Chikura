@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.chikura.parser.BunkerParserTest" tests="12" skipped="0" failures="0" errors="0" timestamp="2026-09-04T01:02:45" hostname="0468376d-d75a-4ef3-be25-6080d464895a" time="0.003">
+  <properties/>
+  <testcase name="preservesIndent[desktop]" classname="com.chikura.parser.BunkerParserTest" time="0.0"/>
+  <testcase name="infersTypeHintChannelAt[desktop]" classname="com.chikura.parser.BunkerParserTest" time="0.001"/>
+  <testcase name="parseMusic[desktop]" classname="com.chikura.parser.BunkerParserTest" time="0.0"/>
+  <testcase name="handlesMultipleSectionsAndCategories[desktop]" classname="com.chikura.parser.BunkerParserTest" time="0.0"/>
+  <testcase name="handlesExeBare[desktop]" classname="com.chikura.parser.BunkerParserTest" time="0.0"/>
+  <testcase name="infersTypeHintShorts[desktop]" classname="com.chikura.parser.BunkerParserTest" time="0.001"/>
+  <testcase name="infersTypeHintPlaylist[desktop]" classname="com.chikura.parser.BunkerParserTest" time="0.0"/>
+  <testcase name="handlesBareRef[desktop]" classname="com.chikura.parser.BunkerParserTest" time="0.0"/>
+  <testcase name="handlesMalformedUrl[desktop]" classname="com.chikura.parser.BunkerParserTest" time="0.0"/>
+  <testcase name="handlesIndentPreservingHierarchy[desktop]" classname="com.chikura.parser.BunkerParserTest" time="0.0"/>
+  <testcase name="handlesBareRefWww[desktop]" classname="com.chikura.parser.BunkerParserTest" time="0.0"/>
+  <testcase name="infersTypeHintChannel[desktop]" classname="com.chikura.parser.BunkerParserTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

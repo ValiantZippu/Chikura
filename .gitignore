@@ -15,3 +15,6 @@ out/
 # OS
 .DS_Store
 Thumbs.db
+web/node_modules/
+web/dist/
+*.tsbuildinfo

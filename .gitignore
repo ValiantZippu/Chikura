@@ -19,3 +19,18 @@ web/dist/
 web/package-lock.json
 *.tsbuildinfo
 
+# Player engine (Chromium bundle ~600MB, machine-local, re-downloaded)
+kcef-bundle/
+kcef-cache/
+kcef-init.log
+composeApp/kcef-bundle/
+composeApp/kcef-cache/
+composeApp/kcef-init.log
+
+# JVM crash logs
+hs_err_*.log
+replay_*.log
+
+# Tool junk
+.freebuff/
+

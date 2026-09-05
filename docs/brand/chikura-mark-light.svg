@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Chikura "Vault C" mark, light-UI variant: black vault, white C + core -->
+  <rect x="2" y="2" width="60" height="60" rx="18" fill="#000000"/>
+  <rect x="2.5" y="2.5" width="59" height="59" rx="17" fill="none" stroke="#2A2A2A" stroke-width="1"/>
+  <path d="M 44.3 21.7 A 16 16 0 1 0 44.3 42.3" fill="none" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round"/>
+  <circle cx="32" cy="32" r="4" fill="#FFFFFF"/>
+</svg>

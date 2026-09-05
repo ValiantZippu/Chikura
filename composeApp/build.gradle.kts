@@ -16,7 +16,11 @@ kotlin {
     // androidTarget()
 
     jvm()
-    jvmToolchain(17)
+    // KCEF/Chromium requires JetBrains Runtime — Temurin loops restart forever.
+    jvmToolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
+        vendor.set(JvmVendorSpec.JETBRAINS)
+    }
 
     @OptIn(ExperimentalWasmDsl::class)
     wasmJs {
@@ -41,6 +45,8 @@ kotlin {
             dependencies {
                 implementation(compose.desktop.currentOs)
                 implementation(libs.ktor.client.cio)
+                implementation(libs.jna)
+                implementation(libs.webview)
             }
         }
         val wasmJsMain by getting {
@@ -89,6 +95,14 @@ compose {
                 packageVersion = "1.0.0"
             }
         }
+    }
+}
+
+// KCEF (Chromium) needs these flags on every desktop JVM launch.
+afterEvaluate {
+    tasks.withType<JavaExec> {
+        jvmArgs("--add-opens", "java.desktop/sun.awt=ALL-UNNAMED")
+        jvmArgs("--add-opens", "java.desktop/java.awt.peer=ALL-UNNAMED")
     }
 }
 

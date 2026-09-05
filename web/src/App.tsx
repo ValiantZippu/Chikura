@@ -1,5 +1,12 @@
 import { useState, useEffect, useCallback } from 'react'
 import { buildThread, type ChikuThread, type Domain, type Resource } from './parser'
+import {
+  getPreview,
+  youtubeEmbed,
+  isFollowed,
+  toggleFollow,
+  type CardPreview,
+} from './preview'
 import './App.css'
 
 const DEFAULT_REPO = 'ValiantZippu/Chikura'
@@ -29,10 +36,164 @@ async function fetchGitHubTree(owner: string, repo: string): Promise<string[]> {
   }
 }
 
+function VideoCard({ resource, preview }: { resource: Resource; preview: CardPreview }) {
+  const [playing, setPlaying] = useState(false)
+  return (
+    <div className="video-card">
+      {!playing ? (
+        <button className="video-shell" onClick={() => setPlaying(true)} aria-label="Play video">
+          {preview.image && (
+            <img src={preview.image} alt="" loading="lazy" onError={(e) => { e.currentTarget.style.display = 'none' }} />
+          )}
+          <span className="video-scrim" />
+          <span className="play-btn">▶</span>
+          <span className="video-tag">VIDEO</span>
+        </button>
+      ) : (
+        <div className="video-shell playing">
+          <iframe
+            src={youtubeEmbed(preview.videoId ?? '', 0)}
+            title={preview.title}
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          />
+          <button className="video-stop" onClick={() => setPlaying(false)}>
+            STOP
+          </button>
+        </div>
+      )}
+      <div className="video-meta">
+        <div className="video-title">{preview.title}</div>
+        <div className="video-sub">{preview.subtitle}</div>
+        <div className="video-urlbar">{resource.url}</div>
+        <div className="video-tags">
+          {resource.section && <span className="tag-dim">{resource.section}</span>}
+          {resource.category && <span className="tag-white">{resource.category}</span>}
+          <a className="tag-link" href={resource.url} target="_blank" rel="noopener noreferrer">
+            OPEN ↗
+          </a>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function ChannelCard({ resource, preview }: { resource: Resource; preview: CardPreview }) {
+  const [following, setFollowing] = useState(() => isFollowed(preview.handle || resource.url))
+  const key = preview.handle || resource.url
+  const name = preview.title || preview.handle
+  return (
+    <div className="channel-row">
+      <div className="avatar">{(name[0] ?? '#').toUpperCase()}</div>
+      <div className="channel-info">
+        <div className="channel-name">{name}</div>
+        <div className="channel-sub">{preview.subtitle}</div>
+        <div className="channel-tags">
+          <span className="pill-white">CHANNEL</span>
+        </div>
+      </div>
+      <div className="channel-actions">
+        <a className="open-btn" href={resource.url} target="_blank" rel="noopener noreferrer">
+          OPEN
+        </a>
+        <button
+          className={following ? 'follow-btn on' : 'follow-btn'}
+          onClick={() => setFollowing(toggleFollow(key))}
+        >
+          {following ? 'FOLLOWING' : 'FOLLOW'}
+        </button>
+      </div>
+    </div>
+  )
+}
+
+function PlaylistCard({ resource, preview }: { resource: Resource; preview: CardPreview }) {
+  return (
+    <div className="channel-row">
+      <div className="playlist-glyph" aria-hidden="true">
+        <span className="pl-bars">
+          <i />
+          <i />
+          <i />
+        </span>
+        <span className="pl-play">▶</span>
+      </div>
+      <div className="channel-info">
+        <div className="channel-name">{preview.title || resource.raw}</div>
+        <div className="channel-sub">{preview.subtitle || resource.url}</div>
+        <div className="channel-tags">
+          <span className="pill-white">PLAYLIST</span>
+        </div>
+      </div>
+      <div className="channel-actions">
+        <a className="open-btn" href={resource.url} target="_blank" rel="noopener noreferrer">
+          OPEN
+        </a>
+      </div>
+    </div>
+  )
+}
+
+function LinkCard({ resource, preview }: { resource: Resource; preview: CardPreview }) {
+  const href = resource.url.startsWith('http') ? resource.url : 'https://' + resource.url
+  return (
+    <div className="link-row">
+      {preview.image && (
+        <div className="link-thumb">
+          <img src={preview.image} alt="" loading="lazy" onError={(e) => { e.currentTarget.style.display = 'none' }} />
+        </div>
+      )}
+      <div className="channel-info">
+        <div className="channel-name">{preview.title || resource.raw}</div>
+        {preview.handle && <div className="link-desc">{preview.handle}</div>}
+        <div className="channel-sub">{preview.subtitle || resource.url}</div>
+        <div className="channel-tags">
+          <span className="pill-dim">{resource.typeHint.toUpperCase().slice(0, 8)}</span>
+          <a className="tag-link" href={href} target="_blank" rel="noopener noreferrer">
+            OPEN ↗
+          </a>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 function ResourceCard({ resource }: { resource: Resource }) {
+  const [preview, setPreview] = useState<CardPreview | null>(null)
+
+  useEffect(() => {
+    let dead = false
+    getPreview(resource).then((p) => {
+      if (!dead) setPreview(p)
+    })
+    return () => {
+      dead = true
+    }
+  }, [resource])
+
+  if (!preview) {
+    return (
+      <div className="resource-card loading" aria-label="Loading preview">
+        <div className="resource-thumb">
+          <span>{resource.typeHint.slice(0, 4).toUpperCase()}</span>
+        </div>
+        <div className="resource-info">
+          <div className="resource-url">{resource.raw}</div>
+          <div className="resource-meta">
+            <span className="resource-type">{resource.typeHint}</span>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  if (preview.kind === 'video') return <VideoCard resource={resource} preview={preview} />
+  if (preview.kind === 'channel') return <ChannelCard resource={resource} preview={preview} />
+  if (preview.kind === 'playlist') return <PlaylistCard resource={resource} preview={preview} />
+  if (preview.kind === 'link') return <LinkCard resource={resource} preview={preview} />
   return (
     <a
-      href={resource.url}
+      href={resource.url.startsWith('http') ? resource.url : 'https://' + resource.url}
       target="_blank"
       rel="noopener noreferrer"
       className="resource-card"
